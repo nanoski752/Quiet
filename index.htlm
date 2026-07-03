@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quiet</title>
+
+<meta name="theme-color" content="#0E2848">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<link rel="manifest" href="manifest.json">
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div id="notification" class="notification oculto">
+
+<div class="notification-title">
+
+⏰ Quedan 15 minutos
+
+</div>
+
+<div class="notification-text">
+
+Faltan 15 minutos para tu hora límite.
+
+</div>
+
+<button onclick="cerrarNotificacion()">
+
+Entendido
+
+</button>
+
+</div>
+
+<div class="app">
+
+<!-- LOGIN -->
+
+<section id="loginScreen" class="screen active">
+
+<div class="logo">
+
+Quiet
+
+</div>
+
+<p class="subtitle">
+
+Descansa mejor.<br>
+
+Empieza creando tu rutina.
+
+</p>
+
+<div class="card">
+
+<input
+
+id="email"
+
+type="email"
+
+placeholder="Correo electrónico"
+
+>
+
+<input
+
+id="password"
+
+type="password"
+
+placeholder="Contraseña"
+
+>
+
+<button
+
+class="primary"
+
+onclick="entrar()">
+
+Ingresar
+
+</button>
+
+<button
+
+class="secondary"
+
+onclick="entrar()">
+
+Continuar como invitado
+
+</button>
+
+</div>
+
+</section>
+
+<!-- INICIO -->
+
+<section
+
+id="homeScreen"
+
+class="screen">
+
+<header>
+
+<h1>
+
+Quiet
+
+</h1>
+
+<select
+
+id="language"
+
+onchange="cambiarIdioma()">
+
+<option value="es">
+
+Español
+
+</option>
+
+<option value="en">
+
+English
+
+</option>
+
+<option value="pt">
+
+Português
+
+</option>
+
+<option value="fr">
+
+Français
+
+</option>
+
+<option value="de">
+
+Deutsch
+
+</option>
+
+<option value="it">
+
+Italiano
+
+</option>
+
+</select>
+
+</header>
+
+<div class="grid">
+
+<button
+
+class="menuButton"
+
+onclick="abrirDormir()">
+
+<div class="icon">
+
+🌙
+
+</div>
+
+<div>
+
+Preparar para dormir
+
+</div>
+
+</button>
+
+<button
+
+class="menuButton"
+
+onclick="abrirDespertar()">
+
+<div class="icon">
+
+☀️
+
+</div>
+
+<div>
+
+Preparar para despertar
+
+</div>
+
+</button>
+
+<button
+
+class="menuButton"
+
+onclick="abrirContactos()">
+
+<div class="icon">
+
+👥
+
+</div>
+
+<div>
+
+Contactos
+
+</div>
+
+</button>
+
+<button
+
+class="menuButton"
+
+onclick="abrirRanking()">
+
+<div class="icon">
+
+🏆
+
+</div>
+
+<div>
+
+Tabla
+
+</div>
+
+</button>
+
+</div>
+
+<div class="racha">
+
+<div>
+
+<h2>
+
+Racha actual
+
+</h2>
+
+<p id="rachaTexto">
+
+0 días
+
+</p>
+
+</div>
+
+<div
+
+id="fire"
+
+class="fire">
+
+🔥
+
+</div>
+
+</div>
+
+<div
+
+id="horario"
+
+class="infoBox">
+
+Aún no configuraste un horario.
+
+</div>
+
+<button
+
+class="simulate"
+
+onclick="simular15Minutos()">
+
+Simular aviso de 15 minutos
+
+</button>
+
+</section>
+<!-- MODAL DORMIR -->
+
+<div id="modalDormir" class="modal">
+
+<div class="modalContent">
+
+<h2>
+
+Preparar para dormir
+
+</h2>
+
+<p class="modalDescription">
+
+Selecciona la hora en la que dejarás de utilizar el teléfono.
+
+</p>
+
+<div class="clockContainer">
+
+<div class="clock">
+
+<div id="horaHandDormir" class="hand hourHand"></div>
+
+<div id="minutoHandDormir" class="hand minuteHand"></div>
+
+<div class="clockCenter"></div>
+
+</div>
+
+</div>
+
+<div class="timeInputs">
+
+<input
+id="horaDormir"
+type="number"
+min="0"
+max="23"
+placeholder="HH">
+
+<input
+id="minutoDormir"
+type="number"
+min="0"
+max="59"
+placeholder="MM">
+
+</div>
+
+<button
+class="primary"
+onclick="guardarHoraDormir()">
+
+Guardar horario
+
+</button>
+
+<button
+class="secondary"
+onclick="cerrarDormir()">
+
+Cancelar
+
+</button>
+
+</div>
+
+</div>
+
+<!-- MODAL DESPERTAR -->
+
+<div id="modalDespertar" class="modal">
+
+<div class="modalContent">
+
+<h2>
+
+Preparar para despertar
+
+</h2>
+
+<p class="modalDescription">
+
+La hora debe ser al menos 8 horas después de la hora de dormir.
+
+</p>
+
+<div class="clockContainer">
+
+<div class="clock">
+
+<div id="horaHandDespertar" class="hand hourHand"></div>
+
+<div id="minutoHandDespertar" class="hand minuteHand"></div>
+
+<div class="clockCenter"></div>
+
+</div>
+
+</div>
+
+<div class="timeInputs">
+
+<input
+id="horaDespertar"
+type="number"
+min="0"
+max="23"
+placeholder="HH">
+
+<input
+id="minutoDespertar"
+type="number"
+min="0"
+max="59"
+placeholder="MM">
+
+</div>
+
+<button
+class="primary"
+onclick="guardarHoraDespertar()">
+
+Guardar horario
+
+</button>
+
+<button
+class="secondary"
+onclick="cerrarDespertar()">
+
+Cancelar
+
+</button>
+
+</div>
+
+</div>
+
+<!-- MODAL CONTACTOS -->
+
+<div id="modalContactos" class="modal">
+
+<div class="modalContent">
+
+<h2>
+
+Contactos permitidos
+
+</h2>
+
+<p class="smallText">
+
+Estos contactos no romperán la racha si se utilizan durante el horario restringido.
+
+</p>
+
+<div class="contactList">
+
+<label class="contactItem">
+
+<span>Mamá</span>
+
+<input type="checkbox" checked>
+
+</label>
+
+<label class="contactItem">
+
+<span>Papá</span>
+
+<input type="checkbox" checked>
+
+</label>
+
+<label class="contactItem">
+
+<span>Hermano</span>
+
+<input type="checkbox">
+
+</label>
+
+<label class="contactItem">
+
+<span>Hermana</span>
+
+<input type="checkbox">
+
+</label>
+
+<label class="contactItem">
+
+<span>Abuela</span>
+
+<input type="checkbox">
+
+</label>
+
+<label class="contactItem">
+
+<span>Abuelo</span>
+
+<input type="checkbox">
+
+</label>
+
+<label class="contactItem">
+
+<span>Amigo 1</span>
+
+<input type="checkbox">
+
+</label>
+
+<label class="contactItem">
+
+<span>Amigo 2</span>
+
+<input type="checkbox">
+
+</label>
+
+<label class="contactItem">
+
+<span>Amigo 3</span>
+
+<input type="checkbox">
+
+</label>
+
+</div>
+
+<button
+class="secondary"
+onclick="cerrarContactos()">
+
+Cerrar
+
+</button>
+
+</div>
+
+</div>
+  <!-- MODAL RANKING -->
+
+<div id="modalRanking" class="modal">
+
+<div class="modalContent">
+
+<h2>
+
+Ranking Mundial
+
+</h2>
+
+<p class="smallText">
+
+Compite con jugadores de todo el mundo manteniendo tu racha.
+
+</p>
+
+<div class="rankingList">
+
+<div class="rankingItem"><span>🥇 1. Lucas González</span><strong>99 🔥</strong></div>
+
+<div class="rankingItem"><span>🥈 2. Sofía Martínez</span><strong>96 🔥</strong></div>
+
+<div class="rankingItem"><span>🥉 3. Mateo Fernández</span><strong>93 🔥</strong></div>
+
+<div class="rankingItem"><span>4. Valentina Rodríguez</span><strong>91 🔥</strong></div>
+
+<div class="rankingItem"><span>5. Benjamín López</span><strong>88 🔥</strong></div>
+
+<div class="rankingItem"><span>6. Emma García</span><strong>84 🔥</strong></div>
+
+<div class="rankingItem"><span>7. Thiago Pérez</span><strong>80 🔥</strong></div>
+
+<div class="rankingItem"><span>8. Martina Sánchez</span><strong>76 🔥</strong></div>
+
+<div class="rankingItem"><span>9. Joaquín Romero</span><strong>72 🔥</strong></div>
+
+<div class="rankingItem"><span>10. Olivia Díaz</span><strong>68 🔥</strong></div>
+
+<div class="rankingItem"><span>11. Tomás Ruiz</span><strong>63 🔥</strong></div>
+
+<div class="rankingItem"><span>12. Julieta Torres</span><strong>58 🔥</strong></div>
+
+<div class="rankingItem"><span>13. Agustín Castro</span><strong>53 🔥</strong></div>
+
+<div class="rankingItem"><span>14. Camila Herrera</span><strong>49 🔥</strong></div>
+
+<div class="rankingItem"><span>15. Nicolás Molina</span><strong>45 🔥</strong></div>
+
+<hr>
+
+<div class="rankingItem you">
+
+<span>👤 Tú</span>
+
+<strong id="tuRacha">0 🔥</strong>
+
+</div>
+
+</div>
+
+<button
+
+class="secondary"
+
+onclick="cerrarRanking()">
+
+Cerrar
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
